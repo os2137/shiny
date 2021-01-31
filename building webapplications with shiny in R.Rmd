@@ -1,0 +1,34 @@
+---
+title: "building webapplications with shiny in R"
+author: "Onkar Singh"
+date: "4/24/2020"
+output: html_document
+---
+
+
+```{r}
+library(shiny)
+library(ggplot2)
+library(babynames)
+```
+
+
+```{r}
+ui <- fluidPage(
+  titlePanel("Baby Name Explorer"),
+  sidebarLayout(
+    sidebarPanel(textInput('name', 'Enter Name', 'David')),
+    mainPanel(plotOutput('trend'))
+  )
+)
+server <- function(input, output, session) {
+  output$trend <- renderPlot({
+    # CODE BELOW: Update to display a line plot of the input name
+    ggplot(subset(babynames, name == "David")) +
+  geom_line(aes(x = year, y = prop, color = sex))
+    
+  })
+}
+shinyApp(ui = ui, server = server)
+```
+
